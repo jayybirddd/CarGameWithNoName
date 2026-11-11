@@ -1,0 +1,25 @@
+# Unreal generated folders (rebuilt automatically)
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+**/Binaries/
+**/Intermediate/
+**/Saved/
+**/DerivedDataCache/
+**/Plugins/*/Binaries/
+**/Plugins/*/Intermediate/
+
+# IDE / build files
+.vs/
+.vscode/
+.idea/
+*.sln
+*.suo
+*.VC.db
+*.opensdf
+*.sdf
+
+# Python cache
+__pycache__/
+*.pyc

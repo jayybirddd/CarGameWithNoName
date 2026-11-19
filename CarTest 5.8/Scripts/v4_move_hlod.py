@@ -1,6 +1,6 @@
 # Moves L_Sandbox's HLOD helper asset next to it, fixes the redirector, and removes the empty /Game/Maps folder.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v4_move_hlod.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v4_move_hlod.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary

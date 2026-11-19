@@ -2,13 +2,13 @@
 # Each map is opened and saved under its new name (like "Save Current Level As"), then the old copy is deleted.
 # Re-runnable: maps already moved are skipped.
 import unreal, traceback, os
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v4_rename_levels.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v4_rename_levels.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary
 LES = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
 UES = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
-CONTENT = "D:/PersonalGameFiles/CarTest 5.8/Content"
+CONTENT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Content"
 MOVES = [("/Game/Car/Maps/CarTestTrack", "/Game/Levels/L_EarthTestTrack"),
          ("/Game/Car/Maps/CarTestMoonGrav", "/Game/Levels/L_MoonTestTrack"),
          ("/Game/Car/Maps/CarTestBoostCharge", "/Game/Levels/L_MoonBoostCharge"),

@@ -1,6 +1,6 @@
 # v2: boost / gears / air-control / antenna — assets, inputs, transmission, components, variables
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_assets.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_assets.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary

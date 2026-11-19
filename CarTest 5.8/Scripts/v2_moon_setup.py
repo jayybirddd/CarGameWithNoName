@@ -9,13 +9,13 @@
 # component copy, which is why the transmission/engine must be re-synced whenever BP_CarPawn's gears change.
 #
 # Usage from the editor console (CHECK only reports; APPLY changes and saves the map):
-#   py exec(open('D:/PersonalGameFiles/CarTest 5.8/Scripts/v2_moon_setup.py').read())
+#   py exec(open('D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Scripts/v2_moon_setup.py').read())
 # with MODE / MAPS set below. A new scene can be made by duplicating an existing map with NEW_SCENE (off by default).
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_moon_setup.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_moon_setup.txt"
 MODE = "CHECK"            # "CHECK" or "APPLY"
-MAPS = ["/Game/Levels/L_MoonTestTrack", "/Game/Levels/L_EarthTestTrack"]
-NEW_SCENE = None          # e.g. ("/Game/Levels/L_MoonTestTrack", "/Game/Levels/L_MoonBoostPickups") to duplicate first
+MAPS = ["/Game/Levels/Testing/TEST_MoonTestTrack", "/Game/Levels/Testing/TEST_EarthTestTrack"]
+NEW_SCENE = None          # e.g. ("/Game/Levels/Testing/TEST_MoonTestTrack", "/Game/Levels/L_MoonBoostPickups") to duplicate first
 MOON_GRAVITY_Z = -162.0
 MOON_GM = "/Game/Car/Blueprints/BP_CarGameMode_Moon"
 MOON_AIR_STABILIZE = 0.6
@@ -77,7 +77,7 @@ try:
         maps.append(dst)
     check_car_sync(MODE == "APPLY")
     for m in maps:
-        moon_map(m, MODE == "APPLY" and m != "/Game/Levels/L_EarthTestTrack")
+        moon_map(m, MODE == "APPLY" and m != "/Game/Levels/Testing/TEST_EarthTestTrack")
 except Exception:
     log(traceback.format_exc())
 with open(OUT, "w") as f: f.write("\n".join(L))

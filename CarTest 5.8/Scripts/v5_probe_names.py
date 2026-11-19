@@ -1,6 +1,6 @@
 # Tries candidate node names in BP_MenuHUD's graph, logs which ones exist and their pins, then removes the test nodes.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v5_probe_names.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v5_probe_names.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 BEL = unreal.BlueprintEditorLibrary; PL = unreal.BlueprintGraphPinLibrary

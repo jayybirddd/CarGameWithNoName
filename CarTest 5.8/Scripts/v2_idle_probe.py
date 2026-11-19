@@ -1,6 +1,6 @@
 # Samples AS_Idle: which bones move, how far, and how fast the motion repeats.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_idle_probe.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_idle_probe.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 APE = unreal.AnimPoseExtensions

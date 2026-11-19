@@ -1,5 +1,5 @@
 import unreal, time, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_bones_rt.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_bones_rt.txt"
 S = {"t0": None, "h": None, "done": False, "L": [], "n": 0}
 def fin():
     S["done"] = True

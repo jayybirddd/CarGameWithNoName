@@ -2,7 +2,7 @@
 # Re-runnable: removes the actors it placed before (labels BoostPad_*, LandMine_*, LevelRules) and places them again.
 # The no-recharge levels (L_MoonBoostCharge, L_EarthBoostCharge) are copies of the matching test track made the first time; later runs just refresh them.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v3_levels.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v3_levels.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary
@@ -14,9 +14,9 @@ MINE = unreal.load_asset(P + "BP_LandMine").generated_class()
 RULES = unreal.load_asset(P + "BP_LevelRules").generated_class()
 FINISH = unreal.load_asset(P + "BP_FinishLine").generated_class()
 FINISH_AHEAD = 11000   # cm in front of the start, past the pads, mines and the first ramp
-NEXT = {"L_EarthTestTrack": "L_MoonTestTrack", "L_MoonTestTrack": "L_EarthBoostCharge", "L_EarthBoostCharge": "L_MoonBoostCharge"}
-TRACK, MOON, CHARGE = "/Game/Levels/L_EarthTestTrack", "/Game/Levels/L_MoonTestTrack", "/Game/Levels/L_MoonBoostCharge"
-EARTH_CHARGE = "/Game/Levels/L_EarthBoostCharge"
+NEXT = {}   # test levels: no next level
+TRACK, MOON, CHARGE = "/Game/Levels/Testing/TEST_EarthTestTrack", "/Game/Levels/Testing/TEST_MoonTestTrack", "/Game/Levels/Testing/TEST_MoonBoostCharge"
+EARTH_CHARGE = "/Game/Levels/Testing/TEST_EarthBoostCharge"
 MINE_EVERY_MAP = [(2400, 0), (2400, 450), (2400, -450), (5200, 700), (5200, -700)]   # (metres ahead x100, sideways) from the start
 PADS_EVERY_MAP = [(1200, 0), (3000, 0), (1200, 1500), (1200, -1500)]
 
@@ -74,7 +74,7 @@ try:
     pads = PADS_EVERY_MAP + [(4800, 0), (6600, 0), (8400, 0), (2400, 3000), (2400, -3000), (6000, 3000), (6000, -3000), (9000, 1800), (9000, -1800)]
     UES = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
     for path, source in ((CHARGE, MOON), (EARTH_CHARGE, TRACK)):
-        if not os.path.exists("D:/PersonalGameFiles/CarTest 5.8/Content" + path[len("/Game"):] + ".umap"):
+        if not os.path.exists("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Content" + path[len("/Game"):] + ".umap"):
             log("== create", path, "from", source, LES.load_level(source), unreal.EditorLoadingAndSavingUtils.save_map(UES.get_editor_world(), path))
         floor = setup(path, pads, MINE_EVERY_MAP, {"BoostRegenEnabled": False, "PadsChargeMeter": True, "StartingLives": 3, "StartingBoost": 0.3})
         if floor:

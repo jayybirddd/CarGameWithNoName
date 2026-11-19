@@ -1,6 +1,6 @@
 # Opens the Moon map in the editor and reports its settings, actors, and which wheel classes each car uses.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_moon_map.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_moon_map.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 SDS = unreal.get_engine_subsystem(unreal.SubobjectDataSubsystem)

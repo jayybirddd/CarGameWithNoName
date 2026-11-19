@@ -1,5 +1,5 @@
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_find_types.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_find_types.txt"
 L = []
 try:
     for nm in dir(unreal):

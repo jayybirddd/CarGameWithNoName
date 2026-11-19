@@ -1,6 +1,6 @@
 # Compares the Moon car/game mode/map against the base ones: what's inherited, what's overridden.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_moon_probe.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_moon_probe.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 BEL = unreal.BlueprintEditorLibrary

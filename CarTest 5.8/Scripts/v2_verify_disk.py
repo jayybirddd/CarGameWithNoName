@@ -9,4 +9,4 @@ try:
         L.append("%s parent %s hud %s" % (gm, b.generated_class().get_super_class().get_name() if hasattr(b.generated_class(), "get_super_class") else "?", c.get_editor_property("hud_class")))
 except Exception:
     L.append(traceback.format_exc())
-open("D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_verify_disk.txt", "w").write("\n".join(L))
+open("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_verify_disk.txt", "w").write("\n".join(L))

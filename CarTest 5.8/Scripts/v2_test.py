@@ -1,6 +1,6 @@
 # v2 scripted test drive (PIE). Logs gears / boost / antenna / air pitch to Saved/claude_v2_test.txt
 import unreal, time, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_test.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_test.txt"
 S = {"t0": None, "last": -1, "lines": [], "h": None, "phase": "", "done": False, "tp1": False, "tp2": False}
 def log(s): S["lines"].append(s) if not s.startswith("setv err") or len(S["lines"]) < 5 else None
 def world():

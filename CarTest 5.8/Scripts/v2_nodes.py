@@ -1,5 +1,5 @@
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_nodes.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_nodes.txt"
 L = []
 try:
     car = unreal.load_asset("/Game/Car/Blueprints/BP_CarPawn")

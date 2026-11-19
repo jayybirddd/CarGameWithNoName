@@ -1,6 +1,6 @@
 # Fixes the redirector left in /Game/Maps after moving the HLOD asset, then removes the folder.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v4_fix_redirect.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v4_fix_redirect.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary

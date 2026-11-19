@@ -2,10 +2,10 @@
 # and the two menu levels (L_TitleScreen, L_LevelSelect). Re-runnable.
 # The in-level overlays (pause / game over / victory) live in BP_CarHUD (v2_hud.py).
 import unreal, traceback, sys, importlib, os
-sys.path.append("D:/PersonalGameFiles/CarTest 5.8/Scripts")
+sys.path.append("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Scripts")
 import gplace as gp; importlib.reload(gp)
 import ghud; importlib.reload(ghud)
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v5_assets.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v5_assets.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 gp.LOG = log
@@ -17,8 +17,7 @@ BP = "/Game/Car/Blueprints"
 PCC = "/Script/Engine.PlayerController"
 TITLE, SELECT = "/Game/Levels/L_TitleScreen", "/Game/Levels/L_LevelSelect"
 # (button label, level name) — the level select list; a level's hit box is named after the level it opens
-LEVELS = [("Earth Test Track", "L_EarthTestTrack"), ("Moon Test Track", "L_MoonTestTrack"),
-          ("Earth Boost Charge", "L_EarthBoostCharge"), ("Moon Boost Charge", "L_MoonBoostCharge")]
+LEVELS = [("Tutorial", "L_Tutorial"), ("Track 1", "L_Track1"), ("Track 2", "L_Track2"), ("Track 3", "L_Track3")]
 WHITE = "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)"
 try:
     # ---------------- pause input: P / Escape / gamepad Start, works while the game is paused
@@ -119,7 +118,7 @@ try:
 
     # ---------------- the two menu levels: empty worlds whose game mode draws the menu
     for path in (TITLE, SELECT):
-        f = "D:/PersonalGameFiles/CarTest 5.8/Content" + path[len("/Game"):] + ".umap"
+        f = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Content" + path[len("/Game"):] + ".umap"
         if not os.path.exists(f):
             log("new level", path, LES.new_level(path))
         else:
@@ -127,7 +126,7 @@ try:
         ws = UES.get_editor_world().get_world_settings()
         ws.set_editor_property("default_game_mode", gm.generated_class())
         log("save", path, LES.save_current_level(), UES.get_editor_world().get_path_name())
-    log("back", LES.load_level("/Game/Levels/L_EarthTestTrack"))
+    log("back", LES.load_level("/Game/Levels/Testing/TEST_EarthTestTrack"))
 except Exception:
     log(traceback.format_exc())
 with open(OUT, "w") as f: f.write("\n".join(L))

@@ -1,8 +1,8 @@
 # v2: BP_CarHUD — boost bar + gear / AUTO-MANUAL readout. Hooked into both car game modes.
 import unreal, traceback, sys, importlib
-sys.path.append("D:/PersonalGameFiles/CarTest 5.8/Scripts")
+sys.path.append("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Scripts")
 import ghy as gh; importlib.reload(gh)
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_hud.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_hud.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 BEL = unreal.BlueprintEditorLibrary
@@ -107,30 +107,99 @@ try:
             g.link(hv, "ReturnValue", r, "RectColor")
             g.val(r, "ScreenX", str(x0 + col * P)); g.val(r, "ScreenY", str(y0 + row * P)); g.val(r, "ScreenW", str(w * P)); g.val(r, "ScreenH", str(h * P))
     # ---------- "no recharge" hint above the boost bar
-    pcm = mvar("PadsChargeMeter", CARC, 5800, 300); ool = mvar("OutOfLives", CARC, 5800, 400)
+    pcm = mvar("PadsChargeMeter", CARC, 5800, 300); ool = mvar("GameOverReady", CARC, 5800, 400)   # set 1.6 s after the car blows up
     hs = n(["Utilities|String|SelectString", "Math|String|SelectString"], 6000, 300)
     g.val(hs, "A", "NO RECHARGE  -  drive over BOOST PADS to refill"); g.val(hs, "B", ""); g.link(pcm, "PadsChargeMeter", hs, "bPickA")
     y_h = yoff(196, 6000, 450)
     t3 = n("HUD|DrawText", 6200, 0); g.exe(prev, "then", t3)
     g.link(hs, "ReturnValue", t3, "Text"); g.val(t3, "TextColor", "(R=0.400000,G=0.850000,B=1.000000,A=1.000000)")
     g.val(t3, "ScreenX", "40.0"); g.link(y_h, "ReturnValue", t3, "ScreenY"); g.val(t3, "Scale", "1.1")
+    # ---------- drift readout right of the boost bar: live "DRIFT +N%" while sliding, then "+N% BOOST" for a moment
+    drg = mvar("Drifting", CARC, 6000, 700); dtv = mvar("DriftTime", CARC, 6000, 800); dmx = mvar("DriftMaxTime", CARC, 6000, 900)
+    dcs = mvar("DriftChargePerSec", CARC, 6000, 1000); dlc = mvar("DriftLastCharge", CARC, 6000, 1100); dpp = mvar("DriftPopup", CARC, 6000, 1200)
+    def pct(val_pin, x, y):
+        m100 = n("Utilities|Operators|Multiply", x, y); g.link(val_pin[0], val_pin[1], m100, "A"); g.val(m100, "B", "100.0")
+        rnd = n("Math|Float|Round", x + 150, y); g.link(m100, "ReturnValue", rnd, "A")
+        ts = n("Utilities|String|ToString(Integer)", x + 300, y); g.link(rnd, "ReturnValue", ts, "InInt")
+        return ts
+    dcap = n("Math|Float|Min(Float)", 6200, 800); g.link(dtv, "DriftTime", dcap, "A"); g.link(dmx, "DriftMaxTime", dcap, "B")
+    dnow = n("Utilities|Operators|Multiply", 6350, 800); g.link(dcap, "ReturnValue", dnow, "A"); g.link(dcs, "DriftChargePerSec", dnow, "B")
+    live = n("Utilities|String|Append", 6900, 800); g.val(live, "A", "DRIFT  +"); g.link(pct((dnow, "ReturnValue"), 6450, 800), "ReturnValue", live, "B")
+    ed.add_node_pin(live); g.val(live, "C", "%")
+    paid = n("Utilities|String|Append", 6900, 1100); g.val(paid, "A", "+"); g.link(pct((dlc, "DriftLastCharge"), 6450, 1100), "ReturnValue", paid, "B")
+    ed.add_node_pin(paid); g.val(paid, "C", "% BOOST")
+    ppos = n("Utilities|Operators|Greater(>)", 6900, 1300); g.link(dpp, "DriftPopup", ppos, "A"); g.val(ppos, "B", "0.0")
+    s_pay = n(["Utilities|String|SelectString", "Math|String|SelectString"], 7100, 1100); g.link(paid, "ReturnValue", s_pay, "A"); g.val(s_pay, "B", ""); g.link(ppos, "ReturnValue", s_pay, "bPickA")
+    s_dr = n(["Utilities|String|SelectString", "Math|String|SelectString"], 7300, 900); g.link(live, "ReturnValue", s_dr, "A"); g.link(s_pay, "ReturnValue", s_dr, "B"); g.link(drg, "Drifting", s_dr, "bPickA")
+    y_d = yoff(93, 7300, 1200)
+    td = n("HUD|DrawText", 6250, 0); g.exe(t3, "then", td); t3 = td
+    g.link(s_dr, "ReturnValue", td, "Text"); g.val(td, "TextColor", "(R=1.000000,G=0.550000,B=0.100000,A=1.000000)")
+    g.val(td, "ScreenX", "380.0"); g.link(y_d, "ReturnValue", td, "ScreenY"); g.val(td, "Scale", "1.6")
+    # ---------- race line (levels with a BP_RaceManager): "LAP 1/3   0:42.18   5 GATES LEFT", plus a gate popup
+    MGRC = "/Game/Car/Placeholders/BP_RaceManager.BP_RaceManager_C"
+    rgm = n(["Utilities|GetActorOfClass", "Actor|GetActorOfClass"], 6400, -600); g.exe(t3, "then", rgm); g.val(rgm, "ActorClass", MGRC)
+    rmc = n("Utilities|Casting|CastToBP_RaceManager", 6650, -600); g.exe(rgm, "then", rmc); g.link(rgm, "ReturnValue", rmc, "Object")
+    rmo = [str(unreal.BlueprintGraphPinLibrary.get_pin_name(p)) for p in g.pins(rmc) if str(unreal.BlueprintGraphPinLibrary.get_pin_name(p)).startswith("As")][0]
+    def rv(name, x, y):
+        nd = ed.add_get_member_variable_node(name, MGRC); nd.set_node_pos(unreal.IntPoint(x, y)); g.link(rmc, rmo, nd, "self"); return nd
+    def istr(node, pin, x, y):
+        t_ = n("Utilities|String|ToString(Integer)", x, y); g.link(node, pin, t_, "InInt"); return t_
+    def tstr(node, pin, x, y):
+        t_ = n(["Utilities|String|TimeSecondstoString", "Utilities|String|TimeSecondsToString"], x, y); g.link(node, pin, t_, "InSeconds"); return t_
+    def app(parts, x, y):
+        ap_ = n("Utilities|String|Append", x, y)
+        for _ in range(len(parts) - 2): ed.add_node_pin(ap_)
+        for k, part in enumerate(parts):
+            pin = "ABCDEFGHIJ"[k]
+            if isinstance(part, str): g.val(ap_, pin, part)
+            else: g.link(part[0], part[1], ap_, pin)
+        return ap_
+    ng = rv("NumGates", 6700, -300); nx_ = rv("NextGate", 6700, -200)
+    left = n("Utilities|Operators|Subtract", 6900, -250); g.link(ng, "NumGates", left, "A"); g.link(nx_, "NextGate", left, "B")
+    left1 = n("Utilities|Operators|Add", 7050, -250); g.link(left, "ReturnValue", left1, "A"); g.val(left1, "B", "1")
+    atfin = n(["Math|Integer|Equal(Integer)", "Utilities|Operators|Equal(==)"], 7050, -150); g.link(nx_, "NextGate", atfin, "A"); g.val(atfin, "B", "0")
+    gl = n("Math|Integer|SelectInt", 7200, -250); g.val(gl, "A", "1"); g.link(left1, "ReturnValue", gl, "B"); g.link(atfin, "ReturnValue", gl, "bPickA")
+    line = app(["LAP ", (istr(rv("Lap", 6700, -400), "Lap", 7300, -450), "ReturnValue"), "/", (istr(rv("Laps", 6700, -500), "Laps", 7300, -550), "ReturnValue"),
+                "      ", (tstr(rv("RaceTime", 6700, -600), "RaceTime", 7300, -650), "ReturnValue"), "      ", (istr(gl, "ReturnValue", 7350, -250), "ReturnValue"), " GATES LEFT"], 7600, -450)
+    fin_line = app(["FINISHED      ", (tstr(rv("RaceTime", 6700, -700), "RaceTime", 7300, -750), "ReturnValue")], 7600, -700)
+    lsel = n(["Utilities|String|SelectString", "Math|String|SelectString"], 7850, -500); g.link(fin_line, "ReturnValue", lsel, "A"); g.link(line, "ReturnValue", lsel, "B")
+    g.link(rv("Finished", 7700, -350), "Finished", lsel, "bPickA")
+    rcx = n("Utilities|Operators|Divide", 7900, -300); g.link(ev, "SizeX", rcx, "A"); g.val(rcx, "B", "2")
+    rcx2 = n("Utilities|Operators|Subtract", 8050, -300); g.link(rcx, "ReturnValue", rcx2, "A"); g.val(rcx2, "B", "330")
+    tl = n("HUD|DrawText", 6900, -900); g.exe(rmc, "then", tl)
+    g.link(lsel, "ReturnValue", tl, "Text"); g.val(tl, "TextColor", "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)")
+    g.link(rcx2, "ReturnValue", tl, "ScreenX"); g.val(tl, "ScreenY", "130.0"); g.val(tl, "Scale", "2.0")   # below the controls hint; hearts sit to the left
+    # gate popup for a moment after passing a gate: "GATE 3   0:42.18" (gate 0 is the lap line)
+    lgt = rv("LastGate", 6700, -1100)
+    islap = n(["Math|Integer|Equal(Integer)", "Utilities|Operators|Equal(==)"], 6900, -1100); g.link(lgt, "LastGate", islap, "A"); g.val(islap, "B", "0")
+    gname = n(["Utilities|String|SelectString", "Math|String|SelectString"], 7100, -1100); g.val(gname, "A", "LAP"); g.link(app(["GATE ", (istr(lgt, "LastGate", 6900, -1250), "ReturnValue")], 7000, -1250), "ReturnValue", gname, "B"); g.link(islap, "ReturnValue", gname, "bPickA")
+    pop = app([(gname, "ReturnValue"), "     ", (tstr(rv("LastGateTime", 6900, -1350), "LastGateTime", 7100, -1350), "ReturnValue")], 7300, -1150)
+    pon = n("Utilities|Operators|Greater(>)", 7300, -1000); g.link(rv("GatePopup", 7150, -1000), "GatePopup", pon, "A"); g.val(pon, "B", "0.0")
+    psel = n(["Utilities|String|SelectString", "Math|String|SelectString"], 7500, -1100); g.link(pop, "ReturnValue", psel, "A"); g.val(psel, "B", ""); g.link(pon, "ReturnValue", psel, "bPickA")
+    pcx = n("Utilities|Operators|Subtract", 8050, -1000); g.link(rcx, "ReturnValue", pcx, "A"); g.val(pcx, "B", "190")
+    pcy = n("Utilities|Operators|Divide", 7900, -950); g.link(ev, "SizeY", pcy, "A"); g.val(pcy, "B", "4")
+    tpp = n("HUD|DrawText", 7200, -900); g.exe(tl, "then", tpp)
+    g.link(psel, "ReturnValue", tpp, "Text"); g.val(tpp, "TextColor", "(R=0.300000,G=0.800000,B=1.000000,A=1.000000)")
+    g.link(pcx, "ReturnValue", tpp, "ScreenX"); g.link(pcy, "ReturnValue", tpp, "ScreenY"); g.val(tpp, "Scale", "2.4")
+    race_done = [(tpp, "then"), (rmc, "CastFailed")]
+
     # ---------- pause / game over / victory overlays (placeholder menus; buttons are HUD hit boxes, see ghud.py)
     import ghud; importlib.reload(ghud)
     PCC = "/Script/Engine.PlayerController"
     RULESC = "/Game/Car/Placeholders/BP_LevelRules.BP_LevelRules_C"
     won = mvar("Won", CARC, 6300, 500)
     paused = n("Game|IsGamePaused", 6300, 600)
-    seq = n("Utilities|FlowControl|Sequence", 6400, 0); g.exe(t3, "then", seq); ed.add_node_pin(seq); ed.add_node_pin(seq)
+    seq = n("Utilities|FlowControl|Sequence", 6400, 0); [g.exe(nd_, pin_, seq) for nd_, pin_ in race_done]; ed.add_node_pin(seq); ed.add_node_pin(seq)
     M = ghud.Menu(ed, g, n, ev, 6700, 1200)
     def overlay(pin, cond, cond_pin, title, buttons, color, note=None):
         br = n("Utilities|FlowControl|Branch", M.x, 0); g.exe(seq, pin, br); g.link(cond, cond_pin, br, "Condition")
         M.panel(br, "then", title, buttons, 0.65, color, note)
     WHITE, RED, GOLD = "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)", "(R=1.000000,G=0.150000,B=0.150000,A=1.000000)", "(R=1.000000,G=0.850000,B=0.150000,A=1.000000)"
     overlay("then_0", paused, "ReturnValue", "PAUSED", [("Resume", "Resume"), ("Restart", "Restart Level"), ("LevelSelect", "Level Select"), ("Title", "Title Screen")], WHITE, "P / Esc / Start resumes")
-    overlay("then_1", ool, "OutOfLives", "GAME OVER", [("Restart", "Retry"), ("LevelSelect", "Level Select"), ("Title", "Title Screen")], RED)
+    overlay("then_1", ool, "GameOverReady", "GAME OVER", [("Restart", "Retry"), ("LevelSelect", "Level Select"), ("Title", "Title Screen")], RED)
     overlay("then_2", won, "Won", "VICTORY!", [("Next", "Next Level"), ("Restart", "Play Again"), ("LevelSelect", "Level Select"), ("Title", "Title Screen")], GOLD)
     # mouse cursor only while one of the overlays is up
-    o1 = n("Math|Boolean|ORBoolean", M.x, 400); g.link(paused, "ReturnValue", o1, "A"); g.link(ool, "OutOfLives", o1, "B")
+    o1 = n("Math|Boolean|ORBoolean", M.x, 400); g.link(paused, "ReturnValue", o1, "A"); g.link(ool, "GameOverReady", o1, "B")
     o2 = n("Math|Boolean|ORBoolean", M.x + 150, 400); g.link(o1, "ReturnValue", o2, "A"); g.link(won, "Won", o2, "B")
     opc = n("HUD|GetOwningPlayerController", M.x, 600)
     scur = ed.add_set_member_variable_node("bShowMouseCursor", PCC); scur.set_node_pos(unreal.IntPoint(M.x + 300, 0))

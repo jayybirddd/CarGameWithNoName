@@ -2,9 +2,9 @@
 # Placeholders are basic engine shapes with their name written on them; swap the meshes later.
 # Re-runnable: rebuilds the three Blueprints' graphs and keeps existing components/variables.
 import unreal, traceback, sys, importlib
-sys.path.append("D:/PersonalGameFiles/CarTest 5.8/Scripts")
+sys.path.append("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Scripts")
 import ghy as gh; importlib.reload(gh)
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v3_assets.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v3_assets.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary

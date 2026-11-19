@@ -1,5 +1,5 @@
 import unreal
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_checkorig.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_checkorig.txt"
 les = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
 les.load_level("/Game/Car/Maps/CarTestTrack")
 ws = unreal.EditorLevelLibrary.get_editor_world().get_world_settings()

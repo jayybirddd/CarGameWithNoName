@@ -1,6 +1,6 @@
 # Opens each level in /Game/Levels and reports its contents, gravity, game mode and level rules.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v4_verify_levels.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v4_verify_levels.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 LES = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)

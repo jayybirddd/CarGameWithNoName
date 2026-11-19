@@ -1,6 +1,6 @@
 # Lists the open map's actors with bounds, and the collision settings of the boost pad's components.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v3_probe_track.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v3_probe_track.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 try:

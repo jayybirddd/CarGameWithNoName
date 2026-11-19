@@ -1,6 +1,6 @@
 # Helpers for building placeholder Blueprints (shapes + labels + triggers) and their graphs from Python.
 import unreal, sys, importlib
-sys.path.append("D:/PersonalGameFiles/CarTest 5.8/Scripts")
+sys.path.append("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Scripts")
 import ghy as gh; importlib.reload(gh)
 EAL = unreal.EditorAssetLibrary
 BEL = unreal.BlueprintEditorLibrary

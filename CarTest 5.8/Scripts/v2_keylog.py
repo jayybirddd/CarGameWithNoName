@@ -1,6 +1,6 @@
 # Logs boost/gear state during PIE while real keys are pressed. Sends no input itself.
 import unreal, time, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_keylog.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_keylog.txt"
 S = {"t0": None, "last": -1, "L": [], "h": None, "done": False}
 def fin():
     S["done"] = True

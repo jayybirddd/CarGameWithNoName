@@ -3,9 +3,9 @@
 # AnimGraph: one Transform(Modify)Bone per antenna segment (component space, additive rotation + offset).
 # Re-runnable: removes event-graph nodes at y >= 1400 and all ModifyBone nodes first.
 import unreal, traceback, sys, importlib
-sys.path.append("D:/PersonalGameFiles/CarTest 5.8/Scripts")
+sys.path.append("D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Scripts")
 import ghy as gh; importlib.reload(gh)
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_antenna.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_antenna.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 BEL = unreal.BlueprintEditorLibrary

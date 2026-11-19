@@ -1,7 +1,7 @@
 # Fix: the v2 key mappings and the Moon HUD were only ever in memory, because save_asset skips
 # assets that aren't flagged dirty. Re-adds them, then forces the saves.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_fix_input_save.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_fix_input_save.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 EAL = unreal.EditorAssetLibrary

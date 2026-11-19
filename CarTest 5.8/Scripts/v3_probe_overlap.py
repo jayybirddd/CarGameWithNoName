@@ -1,6 +1,6 @@
 # Dumps what the car's own overlap/hit events are wired to, plus the pad trigger's collision responses.
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v3_probe_overlap.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v3_probe_overlap.txt"
 L = []
 def log(*a): L.append(" ".join(str(x) for x in a))
 BEL = unreal.BlueprintEditorLibrary; PL = unreal.BlueprintGraphPinLibrary

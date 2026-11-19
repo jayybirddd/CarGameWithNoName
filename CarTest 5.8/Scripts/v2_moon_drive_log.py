@@ -1,6 +1,6 @@
 # Passive PIE logger for the Moon map test: records every 0.1 s while real keys are pressed. Sends no input itself.
 import unreal, time, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_moon_drive_log.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_moon_drive_log.txt"
 DUR = 32.0
 S = {"t0": None, "last": -1, "L": [], "h": None, "done": False}
 def fin():

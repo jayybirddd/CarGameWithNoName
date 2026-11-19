@@ -1,6 +1,6 @@
 # Starts PIE and records the antenna spring: sits idling for the summary window (0.5-9 s), then W may be held.
 import unreal, time, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_idle_log.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_idle_log.txt"
 S = {"t0": None, "last": -1, "L": [], "h": None, "done": False, "x": [], "y": []}
 def fin():
     S["done"] = True

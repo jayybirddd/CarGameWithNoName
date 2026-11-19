@@ -1,5 +1,5 @@
 import unreal, traceback
-OUT = "D:/PersonalGameFiles/CarTest 5.8/Saved/claude_v2_moon_trans.txt"
+OUT = "D:/PersonalGameFiles/CarGameWithNoName/CarTest 5.8/Saved/claude_v2_moon_trans.txt"
 L = []
 BEL = unreal.BlueprintEditorLibrary
 SDS = unreal.get_engine_subsystem(unreal.SubobjectDataSubsystem)
